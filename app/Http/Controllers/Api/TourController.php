@@ -8,31 +8,51 @@ use Illuminate\Http\Request;
 
 class TourController extends Controller
 {
+    private $tour;
+    public function __construct()
+    {
+        $this->tour = new Tour();
+    }
     public function index(Request $request)
     {
-        $query = Tour::where('ten','like','%'.$request->get('keyword').'%');
+        $query = Tour::where('name','like','%'.$request->get('key_word').'%');
         $list = '';
 
         if ($request->get('type') == 'in') {
-            $list = $query->where('loai',0);
+            $list = $query->where('type',0);
         }
 
         if ($request->get('type') == 'out') {
-            $list = $query->where('loai',1);
+            $list = $query->where('type',1);
         }
 
-        if ($request->get('price_sort') == 'asc') {
-            $list = $query->orderBy("gia", "ASC");
+        if ($request->get('price') == 'asc') {
+            $list = $query->orderBy("price", "ASC");
         }
 
-        if ($request->get('price_sort') == 'desc') {
-            $list = $query->orderBy("gia", "desc");
+        if ($request->get('price') == 'desc') {
+            $list = $query->orderBy("price", "desc");
+        }
+
+        if ($request->get('departure_place')) {
+            $list = $query->where('departure_place', 'like','%'. $request->get('departure_place') .'%');
         }
 
         $list = $query->get();
 
         return response()->json([
             'data' => $list,
+            'status' => 200
+        ]
+        );
+    }
+
+    public function detail(Request $request)
+    {
+        //schedules:day,title,image
+        $query = $this->tour->with('schedules')->where('id', $request->id)->get();
+        return response()->json([
+            'data' => $query,
             'status' => 200
         ]
         );

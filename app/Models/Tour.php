@@ -21,4 +21,17 @@ class Tour extends Model
         'mo_ta',
         'ma_cong_ty',
     ];
+
+    protected $casts = [
+        'start_at'       => 'datetime:Y-m-d',
+        'end_at'         => 'datetime:Y-m-d',
+    ];
+
+    public function schedules(){
+        return $this->hasMany(Schedule::class, 'id_tour', 'id');
+    }
+
+    public function company(){
+        return $this->hasOne(Company::class, 'id_company', 'id');
+    }
 }
