@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\TourController;
 use App\Http\Controllers\KhachHangController;
+use App\Http\Controllers\ReceiptController;
+use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,27 +17,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Route::get('/list-tour', [TourController::class, 'index'])->name('list.tour');
-
 Route::post('/login', [KhachHangController::class, 'login']);
 Route::post('/register', [KhachHangController::class, 'register']);
+Route::post('/forget-password', [KhachHangController::class, 'forgetPassword']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/list-tour', [TourController::class, 'index'])->name('list.tour');
-    // Route::get('/users', 'UserController@index');
-});
 Route::group([
     'middleware' => 'auth api',
 ], function () {
     Route::post('/change-password', [KhachHangController::class, 'changePassword']);
-    Route::post('/forget-password', [KhachHangController::class, 'forgetPassword']);
+    Route::post('/profile', [KhachHangController::class, 'profile']);
+    Route::post('/edit/profile', [KhachHangController::class, 'editProfile']);
+    Route::post('/payment', [ReceiptController::class, 'payment']);
+    Route::post('/purchased-order', [ReceiptController::class, 'purchasedOrder']);
 
 });
 
-Route::get('/list-tour', [TourController::class, 'index'])->name('list.tour');
+Route::get('/list-tour', [TourController::class, 'index']);
 Route::get('/tour/detail', [TourController::class, 'detail']);

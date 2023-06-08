@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\MailNotify;
 use App\Models\Customer;
+use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -71,9 +72,16 @@ class KhachHangController extends Controller
     public function forgetPassword(Request $request)
     {
         try {
+            $customer = $this->customer->where('email', $request->email)->exists();
+            if (!$customer) {
+                return response()->json([
+                    'status_code' => 400,
+                    'message' => 'Accout does not exist',
+                ]);
+            }
             $randomString = Str::random(8);
             $data = [
-            'title' => 'Thang12345',
+            'title' => '',
             'body' => $randomString
             ];
             DB::table('customer')
@@ -81,7 +89,48 @@ class KhachHangController extends Controller
             ->update([
                 'password' => Hash::make($randomString),
             ]);
-            Mail::to('hoangthang6301@gmail.com')->send(new MailNotify($data));
+            Mail::to($request->email)->send(new MailNotify($data));
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'success',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status_code' => 400,
+                'message' => $th,
+            ]);
+        }
+
+    }
+
+    public function profile(Request $request)
+    {
+        try {
+            $data = $this->customer->select('id', 'name', 'phone_number', 'address', 'email')->where('id', $request->id)->first();
+            return response()->json([
+                'status_code' => 200,
+                'data' => $data,
+                'message' => 'success',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status_code' => 400,
+                'message' => 'Something went wrong',
+            ]);
+        }
+
+    }
+
+    public function editProfile(Request $request)
+    {
+        try {
+            DB::table('customer')
+            ->where('id', $request->id)
+            ->update([
+                'name' => $request->name,
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+            ]);
             return response()->json([
                 'status_code' => 200,
                 'message' => 'success',
