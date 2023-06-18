@@ -97,7 +97,7 @@ class KhachHangController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status_code' => 400,
-                'message' => $th,
+                'message' => $th + "1",
             ]);
         }
 

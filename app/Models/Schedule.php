@@ -16,6 +16,7 @@ class Schedule extends Model
         'title',
         'description',
         'image',
+        'id_tour',
 
     ];
 

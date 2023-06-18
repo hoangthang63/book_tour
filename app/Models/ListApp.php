@@ -13,7 +13,7 @@ class ListApp extends Model
         'name',
         'logo',
     ];
-    protected $table = 'list_apps';
+    protected $table = 'list_company';
     public $timestamps = false;
 
     public function getAllApp()
@@ -27,15 +27,15 @@ class ListApp extends Model
     }
     public function getAppById($idApp)
     {
-        return DB::table('list_apps')
+        return DB::table('list_company')
         ->select('name')
-        ->where("list_apps.id_app", "=", $idApp)
+        ->where("list_company.id_app", "=", $idApp)
         ->first();
     }
 
     public function updateApp($idApp,$name,$logo)
     {
-        return DB::table('list_apps')
+        return DB::table('list_company')
         ->where('id_app', $idApp)
         ->update([
             'name' => $name,

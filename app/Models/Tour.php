@@ -12,19 +12,23 @@ class Tour extends Model
     protected $table = 'tour';
 
     protected $fillable = [
-        'ma',
-        'ten',
-        'khoi_hanh',
-        'ket_thuc',
-        'gia',
-        'loai',
-        'mo_ta',
-        'ma_cong_ty',
+        'id',
+        'name',
+        'start_at',
+        'end_at',
+        'price',
+        'type',
+        'description',
+        'image',
+        'slot',
+        'slot_available',
+        'id_company',
+        'departure_place'
     ];
 
     protected $casts = [
-        'start_at'       => 'datetime:Y-m-d',
-        'end_at'         => 'datetime:Y-m-d',
+        // 'start_at'       => 'datetime:Y-m-d',
+        // 'end_at'         => 'datetime:Y-m-d',
     ];
 
     public function schedules(){

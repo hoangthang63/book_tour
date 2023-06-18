@@ -47,6 +47,7 @@ Route::group([
         // thêm tour
         Route::get('admin/tour/create', [TourController::class, 'create'])->name('tour.create');
         Route::post('admin/tour/create', [TourController::class, 'store'])->name('tour.store');
+        Route::get('admin/tour', [TourController::class, 'index'])->name('tour.index');
         Route::get('admin/tour/edit/{tour}', [TourController::class, 'edit'])->name('tour.edit');
         Route::post('admin/tour/edit/{tour}', [TourController::class, 'update'])->name('tour.update');
 

@@ -60,6 +60,12 @@
                                     </a>
                                 </li> --}}
                                 <li class="side-nav-item">
+                                    <a href="{{ route('tour.index') }}" class="side-nav-link" aria-expanded="false">
+                                        <i class=" mdi mdi-file-settings-variant-outline"></i>
+                                        <span> List Tour </span>
+                                    </a>
+                                </li>
+                                <li class="side-nav-item">
                                     <a href="{{ route('setting.coupon') }}" class="side-nav-link" aria-expanded="false">
                                         <i class=" mdi mdi-file-settings-variant-outline"></i>
                                         <span> Setting coupon </span>
