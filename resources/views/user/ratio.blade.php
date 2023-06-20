@@ -18,8 +18,7 @@
             <figure class="highcharts-figure">
                 <div id="container"></div>
                 <p class="highcharts-description">
-                    Pie chart where the individual slices can be clicked to expose more
-                    detailed data.
+
                 </p>
             </figure>
         </div>
@@ -39,13 +38,13 @@
                 type: 'pie'
             },
             title: {
-                text: 'Browser market shares. January, 2022',
+                text: 'Thống kê tỷ lệ đặt tour',
                 align: 'left'
             },
-            subtitle: {
-                text: 'Click the slices to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>',
-                align: 'left'
-            },
+            // subtitle: {
+            //     text: 'Click the slices to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>',
+            //     align: 'left'
+            // },
 
             accessibility: {
                 announceNewData: {
@@ -72,33 +71,18 @@
             },
 
             series: [{
-                name: 'Browsers',
+                name: 'Tỷ lệ tour',
                 colorByPoint: true,
                 data: [{
-                        name: 'Chrome',
-                        y: 61.04,
-                        drilldown: 'Chrome'
+                        name: 'Nội địa',
+                        y: {{ $inlandRatio }},
+                        // drilldown: 'Chrome'
                     },
                     {
-                        name: 'Safari',
-                        y: 9.47,
-                        drilldown: 'Safari'
+                        name: 'Quốc tế',
+                        y: {{ $internationalRatio }},
+                        // drilldown: 'Safari'
                     },
-                    {
-                        name: 'Edge',
-                        y: 9.32,
-                        drilldown: 'Edge'
-                    },
-                    {
-                        name: 'Firefox',
-                        y: 8.15,
-                        drilldown: 'Firefox'
-                    },
-                    {
-                        name: 'Other',
-                        y: 11.02,
-                        drilldown: null
-                    }
                 ]
             }],
             drilldown: {
@@ -254,54 +238,6 @@
                             ]
                         ]
                     },
-                    {
-                        name: 'Edge',
-                        id: 'Edge',
-                        data: [
-                            [
-                                'v97',
-                                6.62
-                            ],
-                            [
-                                'v96',
-                                2.55
-                            ],
-                            [
-                                'v95',
-                                0.15
-                            ]
-                        ]
-                    },
-                    {
-                        name: 'Firefox',
-                        id: 'Firefox',
-                        data: [
-                            [
-                                'v96.0',
-                                4.17
-                            ],
-                            [
-                                'v95.0',
-                                3.33
-                            ],
-                            [
-                                'v94.0',
-                                0.11
-                            ],
-                            [
-                                'v91.0',
-                                0.23
-                            ],
-                            [
-                                'v78.0',
-                                0.16
-                            ],
-                            [
-                                'v52.0',
-                                0.15
-                            ]
-                        ]
-                    }
                 ]
             }
         });

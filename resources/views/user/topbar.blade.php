@@ -4,7 +4,7 @@
         <!-- LOGO -->
         <a href="" class="topnav-logo">
             <span class="topnav-logo-lg">
-                <img src="https://www.paditech.com/wp-content/uploads/2018/08/logo_header.png" alt="" height="35">
+                {{-- <img src="https://www.paditech.com/wp-content/uploads/2018/08/logo_header.png" alt="" height="35"> --}}
             </span>
         </a>
 

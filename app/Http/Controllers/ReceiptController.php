@@ -28,6 +28,7 @@ class ReceiptController extends Controller
         $app->id_tour = $request->id_tour;
         $app->id_customer = $request->id;
         $app->amount = $request->amount;
+        $app->total = $request->amount * $tour->price;
         $app->save();
 
         return response()->json([

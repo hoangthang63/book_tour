@@ -68,15 +68,15 @@
 
                                 <li class="side-nav-item">
                                     <a href="{{ route('tour.stat') }}" class="side-nav-link" aria-expanded="false">
-                                        <i class="mdi mdi-file-settings-variant"></i>
-                                        <span> Thống kê </span>
+                                        <i class="dripicons-article"></i>
+                                        <span> Stat </span>
                                     </a>
                                 </li>
 
                                 <li class="side-nav-item">
                                     <a href="{{ route('tour.ratio') }}" class="side-nav-link" aria-expanded="false">
-                                        <i class="mdi mdi-file-settings-variant"></i>
-                                        <span> Tỷ lệ </span>
+                                        <i class="dripicons-graph-pie"></i>
+                                        <span> Ratio </span>
                                     </a>
                                 </li>
 

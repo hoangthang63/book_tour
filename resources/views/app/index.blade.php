@@ -20,7 +20,7 @@ session()->forget('notification');
                         <div class="modal-body">
                             <div class="text-center mt-2 mb-4">
                                 <a href="index.html" class="text-success">
-                                    <span><img src="https://www.paditech.com/wp-content/uploads/2018/08/logo_header.png" alt="" height="35"></span>
+                                    {{-- <span><img src="https://www.paditech.com/wp-content/uploads/2018/08/logo_header.png" alt="" height="35"></span> --}}
                                 </a>
                             </div>
                             @if ($errors->any())

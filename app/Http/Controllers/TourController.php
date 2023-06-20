@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Receipt;
 use App\Models\Schedule;
 use App\Models\Tour;
 use Carbon\Carbon;
@@ -12,9 +13,11 @@ use Illuminate\Support\Facades\DB;
 class TourController extends Controller
 {
     private $tour;
+    private $receipt;
     public function __construct()
     {
         $this->tour = new Tour();
+        $this->receipt = new Receipt();
     }
 
     public function index(Request $request)
@@ -24,7 +27,6 @@ class TourController extends Controller
 
         if (!$request->type || $request->type == 'inPrepare') {
             $listTour = DB::table('tour')
-            // ->select('name')
             ->where("tour.id_company", "=", $idApp)
             ->where("start_at", '>', $toDay)
             ->get();
@@ -42,7 +44,6 @@ class TourController extends Controller
 
         if ($request->type == 'inProgress') {
             $listTour = DB::table('tour')
-            // ->select('name')
             ->where("tour.id_company", "=", $idApp)
             ->where("start_at", '<=', $toDay)
             ->where("end_at", '>=', $toDay)
@@ -51,18 +52,13 @@ class TourController extends Controller
 
         if ($request->type == 'ended') {
             $listTour = DB::table('tour')
-            // ->select('name')
             ->where("tour.id_company", "=", $idApp)
             ->where("end_at", '<', $toDay)
             ->get();
         }
-        // $listApp = $this->tour->getAllApp();
-        // $allApp = $this->tour->getAll();
 
-        // dd($listTour->toSql());
         return view('user.list_tour', [
             'listTour' => $listTour,
-            // 'all_apps' => $allApp,
         ]);
     }
 
@@ -123,8 +119,6 @@ class TourController extends Controller
 
     public function update($tour, Request $request)
     {
-        // $image =  '/storage/' . $request->logo->store('uploads_' . $app, 'public');
-        // $this->tour->updateApp($app, $request->name, $image);
         try {
             DB::beginTransaction();
 
@@ -137,14 +131,13 @@ class TourController extends Controller
                 'price' => $request->price,
                 'type' => $request->type,
                 'description' => $request->description,
-                // 'image' => $request->name,
                 'slot' => $request->slot,
                 'slot_available' => $request->slot - $request->booked,
                 'departure_place' => $request->departure_place,
             ]);
     
             $schedules = Schedule::where('id_tour', $tour)->pluck('id')->toArray();
-            // dd($tour);
+
             for ($i=1; $i <= $request->total; $i++) { 
                 Schedule::updateOrCreate(
                     [
@@ -155,7 +148,6 @@ class TourController extends Controller
                        'day'     => $i,
                        'title' => $request->get('schedule_title_' . $i),
                        'description'    => $request->get('schedule_description_' . $i),
-                    //    'image'   => $request->get('schedule_image_' . $i),
                     ],
                 );
             }
@@ -171,16 +163,11 @@ class TourController extends Controller
     }
     public function stat()
     {
-        $get1 = DB::select("SELECT DATE_FORMAT(created_at,'%e-%m') 
-        as ngay, SUM(total) as count from receipt group by ngay;");
-        // $get1 = DB::select("SELECT DATE_FORMAT(created_at,'%e-%m') as ngay, count(*) as count from in_out_histories group by ngay");
-        // dd($get1);
-        // $today = date('d');
+        $idApp = session()->get('id_app');
 
-        // $max_date = 30;
-        // $day_last_month = 30 - $today;
-        // $last_month = date('m', strtotime(" -1 month"));
-        // dd($last_month);
+        $get1 = DB::select("SELECT DATE_FORMAT(created_at,'%e-%m') 
+        as ngay, SUM(total) as count  from receipt join tour on receipt.id_tour = tour.id where id_company = $idApp group by ngay;");
+
         $max_date = 30;
         $today = date('d');
         $get_day_last_month = $max_date - $today;
@@ -199,19 +186,13 @@ class TourController extends Controller
             $arr[$key] = 0;
         }
 
-        // for ($i = 0; $i < count($get1); $i++) {
-        //     $arr[$get1[$i]->ngay] = $get1[$i]->count;
-        // }
-        // $dem = 1;
         foreach ($get1 as $each) { 
             $arr[$each->ngay] = (int)$each->count;
         }
-        // dd($arr);
+
         $arrX = array_keys($arr);
         $arrY = array_values($arr);
-        // $paymentDate = strtotime($date);
-        // $newformat = date('d/m/Y',$paymentDate);
-        // $day = Carbon::createFromFormat('d/m/Y', $newformat)->format('l');
+
         return view('user.chart', [
             'arrX' => $arrX,
             'arrY' => $arrY,
@@ -220,10 +201,21 @@ class TourController extends Controller
 
     public function ratio()
     {
+        $idApp = session()->get('id_app');
+        // dd($idApp);
+        $inland = $this->tour->where('type' , 0)->where('id_company' , $idApp)->pluck('id')->toArray();
+        $international = $this->tour->where('type' , 1)->where('id_company' , $idApp)->pluck('id')->toArray();
+
+        // dd($inland, );
+        $inlandTotal = (int) $this->receipt->getRatio($inland);
+        $internationalTotal = (int) $this->receipt->getRatio($international);
+        $inlandRatio = round($inlandTotal/($inlandTotal + $internationalTotal) * 100,2);
+        $internationalRatio = 100-$inlandRatio;
+        // dd($inlandRatio, $internationalRatio);
 
         return view('user.ratio', [
-            // 'arrX' => $arrX,
-            // 'arrY' => $arrY,
+            'inlandRatio' => $inlandRatio,
+            'internationalRatio' => $internationalRatio,
         ]);
     }
     public function destroy($app)

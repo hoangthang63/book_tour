@@ -10,7 +10,7 @@ session()->forget('notification');
 
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <h4>List app admin account</h4>
+            <h4>List Tour</h4>
             <!-- Signup modal-->
             {{-- <div class="form-group">
                 <label for="simpleinput">Text</label>
@@ -41,9 +41,12 @@ session()->forget('notification');
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Name</th>
-                        <th>departure_place</th>
-                        <th>price</th>
+                        <th>Tên</th>
+                        <th>Điểm khởi hành</th>
+                        <th>Giá</th>
+                        <th>Thời gian</th>
+                        <th>Đã đặt</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Receipt extends Model
 {
@@ -18,4 +19,12 @@ class Receipt extends Model
         'status',
 
     ];
+
+    public function getRatio($params)
+    {
+        return DB::table('receipt')
+        ->join('tour', 'tour.id', '=', 'receipt.id_tour')
+        ->whereIn('receipt.id_tour', $params)
+        ->sum('receipt.amount');
+    }
 }

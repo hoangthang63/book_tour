@@ -27,8 +27,8 @@
                     <!-- Logo -->
                     <div class="auth-brand text-center text-lg-left">
                         <a href="index.html" class="logo-dark">
-                            <span><img src="https://www.paditech.com/wp-content/uploads/2018/08/logo_header.png"
-                                    alt="" height="35"></span>
+                            {{-- <span><img src="https://www.paditech.com/wp-content/uploads/2018/08/logo_header.png"
+                                    alt="" height="35"></span> --}}
                         </a>
                     </div>
 

@@ -1,10 +1,11 @@
-@extends('user.master')
+@extends('layout.master')
+{{-- @extends('user.master') --}}
 @section('content')
     <h2 class="pl-2">Tạo Tour</h2>
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body scroll">
                         {{-- <h4 class="header-title">Tên</h4> --}}
                         <form action="{{ route('tour.store') }}" method="POST">
                             @csrf
@@ -122,4 +123,17 @@
 
         }
     </script>
+@endsection
+@section('app')
+    <style>
+        .btn-outline-primary {
+            pointer-events: none;
+        }
+        .scroll {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <button type="button"
+        class="btn btn-outline-primary mt-2">{{ session()->get('name_app') ? session()->get('name_app') : 'CGV' }} </button>
 @endsection

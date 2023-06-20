@@ -71,7 +71,7 @@
         <!-- end page -->
 
         <footer class="footer footer-alt">
-            2018 - 2020 © Hyper - Coderthemes.com
+            KMA
         </footer>
 
         <!-- bundle -->
