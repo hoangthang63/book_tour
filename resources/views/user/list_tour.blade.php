@@ -30,7 +30,7 @@ session()->forget('notification');
 
 
             <div class="form-group d-block">
-                <button class="btn btn-primary">Create</button>
+                <a href="{{ route('tour.create') }}" class="btn btn-primary">Create</a>
             </div><!-- /.modal -->
         </div>
         {{-- @php

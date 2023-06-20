@@ -50,6 +50,8 @@ Route::group([
         Route::get('admin/tour', [TourController::class, 'index'])->name('tour.index');
         Route::get('admin/tour/edit/{tour}', [TourController::class, 'edit'])->name('tour.edit');
         Route::post('admin/tour/edit/{tour}', [TourController::class, 'update'])->name('tour.update');
+        Route::get('admin/stat', [TourController::class, 'stat'])->name('tour.stat');
+        Route::get('admin/ratio', [TourController::class, 'ratio'])->name('tour.ratio');
 
         Route::delete('admin/destroy/{app}', [ListAppController::class, 'destroy'])->name('app.destroy');
         // list app admin account

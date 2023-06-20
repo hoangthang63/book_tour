@@ -34,7 +34,7 @@
                 <div class="form-group row mb-3">
                     <label for="inputEmail3" class="col-3 col-form-label">Mật khẩu</label>
                     <div class="col-9">
-                        <input type="text" class="form-control" name="password" value="{{ $app->password }}">
+                        <input type="password" class="form-control" name="password" value="{{ $app->password }}">
                     </div>
                 </div>
 

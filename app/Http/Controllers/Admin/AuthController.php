@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ListApp;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -36,7 +37,13 @@ class AuthController extends Controller
         try {
             $account = $request->get('account');
             $password = $request->get('password');
-            $admin = $this->admins->getAdmin($account, $password);
+            $admin = $this->admins->where('account', $account)->first();
+            if ($admin == null) {
+                return redirect()->route('login')->with('message', 'The username or password you entered is incorrect, please try again.');
+            }
+
+        if(Hash::check($password, $admin->password)) {
+            // $admin = $this->admins->getAdmin($account, $password);
             session()->put('id_app', $admin->id_app);
             if ($admin->id_app == null) {
                 $idFirstApp = $this->listApps->getFirstApp();
@@ -51,6 +58,10 @@ class AuthController extends Controller
                 return redirect()->route('setting.coupon');
             }
             return redirect()->route('admin');
+        } else {
+            return redirect()->route('login')->with('message', 'The username or password you entered is incorrect, please try again.');
+        }
+
         } catch (\Throwable $th) {
             return redirect()->route('login')->with('message', 'The username or password you entered is incorrect, please try again.');
         }

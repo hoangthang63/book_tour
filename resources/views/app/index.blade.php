@@ -84,7 +84,7 @@ session()->forget('notification');
                             <td>{{ $each->id }}</td>
                             <td>{{ $each->name }}</td>
                             <td>{{ $each->account }}</td>
-                            <td>{{ $each->password }}</td>
+                            <td title="{{ $each->password }}">{{ substr($each->password, 0, 10) . "..." }}</td>
                             <td><a href="{{ route('app.admin.edit',['app' => $each->id]) }}" class="btn btn-info">Edit</a></td>
                             <td>
                             <form action="{{ route('app.admin.destroy',['app' => $each->id]) }}" style="display: inline" method="POST" >

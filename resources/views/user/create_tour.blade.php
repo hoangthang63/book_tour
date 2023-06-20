@@ -38,7 +38,7 @@
                         
                         <div class="form-group mb-3">
                             <label for="example-date">Ngày khởi hành:</label>
-                            <input class="form-control col-sm-4" id="start_date" type="date" name="start_at">
+                            <input class="form-control col-sm-4" onchange="myFuntion()" id="start_date" type="date" name="start_at">
                         </div>
 
                         <div class="form-group mb-3">
@@ -52,12 +52,12 @@
 
                         <div class="form-group">
                             <label for="simpleinput">Số chỗ</label>
-                            <input type="number" id="" name="slot" placeholder="40" class="form-control">
+                            <input type="number" id="" min="1" name="slot" placeholder="40" class="form-control">
                         </div>
 
                         <div class="form-group">
                             <label for="simpleinput">Giá:</label>
-                            <input type="number" id="" name="price" placeholder="nhập giá" class="form-control">
+                            <input type="number" id="" min="0" name="price" placeholder="nhập giá" class="form-control">
                         </div>
 
                         <button class="btn btn-primary">Tạo</button>
@@ -74,9 +74,28 @@
     <script>
         let start_date_el = document.getElementById("start_date");
         let end_date_el = document.getElementById("end_date");
+        var now = dayjs(dayjs(), "MM-DD-YYYY")
         function myFuntion(){
             const start_date = dayjs(start_date_el.value);
             const end_date = dayjs(end_date_el.value);
+            console.log("now:" + (now - start_date))
+            if (now - start_date > 0) {
+                document.getElementById("start_date").value = ''
+                alert("Ngày khởi hành phải sau ngày hôm nay");
+                return
+            }
+
+            if (now - end_date > 0) {
+                document.getElementById("end_date").value = ''
+                alert("Ngày kết thúc phải sau ngày hôm nay");
+                return
+            }
+
+            if (start_date - end_date >= 0) {
+                document.getElementById("end_date").value = ''
+                alert("Ngày kết thúc phải sau ngày khởi hành");
+                return
+            }
 
             let days = end_date.diff(start_date, 'days');
 

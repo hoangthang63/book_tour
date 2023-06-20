@@ -169,7 +169,63 @@ class TourController extends Controller
         }
 
     }
+    public function stat()
+    {
+        $get1 = DB::select("SELECT DATE_FORMAT(created_at,'%e-%m') 
+        as ngay, SUM(total) as count from receipt group by ngay;");
+        // $get1 = DB::select("SELECT DATE_FORMAT(created_at,'%e-%m') as ngay, count(*) as count from in_out_histories group by ngay");
+        // dd($get1);
+        // $today = date('d');
 
+        // $max_date = 30;
+        // $day_last_month = 30 - $today;
+        // $last_month = date('m', strtotime(" -1 month"));
+        // dd($last_month);
+        $max_date = 30;
+        $today = date('d');
+        $get_day_last_month = $max_date - $today;
+        $this_month = date('m');
+        $last_month = date('m', strtotime(" - 1 month"));
+        $last_month_date = date('Y-m-d', strtotime(" -1 month"));
+        $max_day_last_month = (new DateTime($last_month_date))->format('t');
+        $start_day_last_month = $max_day_last_month - $get_day_last_month;
+        for ($i = $start_day_last_month; $i <= $max_day_last_month; $i++) {
+            $key = $i . '-' . $last_month;
+            $arr[$key] = 0;
+        }
+
+        for ($i = 1; $i <= $today; $i++) {
+            $key = $i . '-' . $this_month;
+            $arr[$key] = 0;
+        }
+
+        // for ($i = 0; $i < count($get1); $i++) {
+        //     $arr[$get1[$i]->ngay] = $get1[$i]->count;
+        // }
+        // $dem = 1;
+        foreach ($get1 as $each) { 
+            $arr[$each->ngay] = (int)$each->count;
+        }
+        // dd($arr);
+        $arrX = array_keys($arr);
+        $arrY = array_values($arr);
+        // $paymentDate = strtotime($date);
+        // $newformat = date('d/m/Y',$paymentDate);
+        // $day = Carbon::createFromFormat('d/m/Y', $newformat)->format('l');
+        return view('user.chart', [
+            'arrX' => $arrX,
+            'arrY' => $arrY,
+        ]);
+    }
+
+    public function ratio()
+    {
+
+        return view('user.ratio', [
+            // 'arrX' => $arrX,
+            // 'arrY' => $arrY,
+        ]);
+    }
     public function destroy($app)
     {
 

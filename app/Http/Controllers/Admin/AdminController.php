@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreRequest;
 use App\Models\Admin;
-
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -30,6 +30,7 @@ class AdminController extends Controller
         $app = new Admin();
         $app->fill($request->except('_token'));
         $app->id_app = $idApp;
+        $app->password = Hash::make($request->password) ;
         $app->role = 0;
         $app->save();
         session()->put('notification', true);
@@ -37,11 +38,16 @@ class AdminController extends Controller
     }
 
     public function update(Request $request,Admin $app){
+        // $request->password = Hash::make($request->password);
+
         $app->update(
-            $request->except([
-                '_token',
-                '_method',
-            ])
+            [
+                'password' => Hash::make($request->password),
+                'account' => $request->account,
+                'name' => $request->name,
+
+            ]
+
         );
         session()->put('notification', true);
         return redirect()->route('app.admin');

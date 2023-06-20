@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -72,6 +73,7 @@ class KhachHangController extends Controller
     public function forgetPassword(Request $request)
     {
         try {
+            $apiURL = "https://travelkma.onrender.com/nodemail";
             $customer = $this->customer->where('email', $request->email)->exists();
             if (!$customer) {
                 return response()->json([
@@ -81,15 +83,27 @@ class KhachHangController extends Controller
             }
             $randomString = Str::random(8);
             $data = [
-            'title' => '',
-            'body' => $randomString
+            'email' => $request->email,
+            'password' => $randomString
             ];
             DB::table('customer')
-            ->where('id', $request->id)
+            ->where('email', $request->email)
             ->update([
                 'password' => Hash::make($randomString),
             ]);
-            Mail::to($request->email)->send(new MailNotify($data));
+            // Mail::to($request->email)->send(new MailNotify($data));
+            $headers = [
+                'X-header' => 'value'
+            ];
+            
+            $response = Http::withHeaders($headers)->post($apiURL, $data);
+            
+            $statusCode = $response->status();            
+            
+            if ($statusCode == 200) {
+                $responseBody = json_decode($response->getBody(), true);
+                $data = $responseBody;
+            }
             return response()->json([
                 'status_code' => 200,
                 'message' => 'success',

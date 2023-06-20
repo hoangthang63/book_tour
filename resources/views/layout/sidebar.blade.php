@@ -65,7 +65,22 @@
                                         <span> List Tour </span>
                                     </a>
                                 </li>
+
                                 <li class="side-nav-item">
+                                    <a href="{{ route('tour.stat') }}" class="side-nav-link" aria-expanded="false">
+                                        <i class="mdi mdi-file-settings-variant"></i>
+                                        <span> Thống kê </span>
+                                    </a>
+                                </li>
+
+                                <li class="side-nav-item">
+                                    <a href="{{ route('tour.ratio') }}" class="side-nav-link" aria-expanded="false">
+                                        <i class="mdi mdi-file-settings-variant"></i>
+                                        <span> Tỷ lệ </span>
+                                    </a>
+                                </li>
+
+                                {{-- <li class="side-nav-item">
                                     <a href="{{ route('setting.coupon') }}" class="side-nav-link" aria-expanded="false">
                                         <i class=" mdi mdi-file-settings-variant-outline"></i>
                                         <span> Setting coupon </span>
@@ -91,7 +106,7 @@
                                         <i class="mdi mdi-file-export-outline"></i>
                                         <span> Export coupon data</span>
                                     </a>
-                                </li>
+                                </li> --}}
 
 
                                 <!-- end Help Box -->
