@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [KhachHangController::class, 'login']);
 Route::post('/register', [KhachHangController::class, 'register']);
 Route::post('/forget-password', [KhachHangController::class, 'forgetPassword']);
+Route::get('/status-payment', [ReceiptController::class, 'statusPayment']);
 
 Route::group([
     'middleware' => 'auth api',

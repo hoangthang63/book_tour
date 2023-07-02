@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,9 +28,15 @@ class Tour extends Model
     ];
 
     protected $casts = [
-        // 'start_at'       => 'datetime:Y-m-d',
-        // 'end_at'         => 'datetime:Y-m-d',
+        'start_at'       => 'date',
+        'end_at'         => 'date',
     ];
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return (int) \Carbon\Carbon::parse($date)->timestamp;
+        // return $date->format('Y-m-d');
+    }
 
     public function schedules(){
         return $this->hasMany(Schedule::class, 'id_tour', 'id');

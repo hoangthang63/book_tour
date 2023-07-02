@@ -180,7 +180,7 @@ class KhachHangController extends Controller
                 ]);
             return response()->json([
                 'status_code' => 200,
-                'message' => 'thành công',
+                'message' => 'success',
             ]);
         } catch (\Throwable $th) {
             return response()->json([

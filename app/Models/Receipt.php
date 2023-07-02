@@ -20,6 +20,9 @@ class Receipt extends Model
 
     ];
 
+    public function tour(){
+        return $this->belongsTo(Tour::class, 'id_tour', 'id');
+    }
     public function getRatio($params)
     {
         return DB::table('receipt')

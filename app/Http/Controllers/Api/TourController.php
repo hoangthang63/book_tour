@@ -50,7 +50,7 @@ class TourController extends Controller
     public function detail(Request $request)
     {
         //schedules:day,title,image
-        $query = $this->tour->with('schedules')->where('id', $request->id)->get();
+        $query = $this->tour->with('schedules')->where('id', $request->id)->first();
         return response()->json([
             'data' => $query,
             'status' => 200
