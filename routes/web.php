@@ -52,6 +52,7 @@ Route::group([
         Route::post('admin/tour/edit/{tour}', [TourController::class, 'update'])->name('tour.update');
         Route::get('admin/stat', [TourController::class, 'stat'])->name('tour.stat');
         Route::get('admin/ratio', [TourController::class, 'ratio'])->name('tour.ratio');
+        Route::delete('admin/tour/destroy/{tour}', [TourController::class, 'destroy'])->name('tour.destroy');
 
         Route::delete('admin/destroy/{app}', [ListAppController::class, 'destroy'])->name('app.destroy');
         // list app admin account
@@ -64,20 +65,20 @@ Route::group([
         //
     });
     // Setting coupon
-    Route::get('admin/coupon', [CouponController::class, 'setting'])->name('setting.coupon');
-    Route::post('admin/coupon', [CouponController::class, 'store'])->name('store.coupon');
-    // Setting stamp card
-    Route::get('admin/stamp', [StampCardsController::class, 'setting'])->name('setting.stamp');
-    Route::post('admin/stamp', [StampCardsController::class, 'store'])->name('store.stamp');
-    // Setting image stamp card
-    Route::get('admin/stamp/image', [OrdinalImagesController::class, 'index'])->name('setting.image');
-    Route::post('admin/stamp/image', [OrdinalImagesController::class, 'store'])->name('store.image');
-    // Store management
-    Route::get('admin/store', [StoreController::class, 'index'])->name('store.management');
-    Route::post('admin/store', [StoreController::class, 'import'])->name('store.import');
-    // Export coupon
-    Route::get('admin/export', [CouponWinningListsController::class, 'index'])->name('coupon.winning.lists');
-    Route::post('admin/exporting', [CouponWinningListsController::class, 'export'])->name('export');
+    // Route::get('admin/coupon', [CouponController::class, 'setting'])->name('setting.coupon');
+    // Route::post('admin/coupon', [CouponController::class, 'store'])->name('store.coupon');
+    // // Setting stamp card
+    // Route::get('admin/stamp', [StampCardsController::class, 'setting'])->name('setting.stamp');
+    // Route::post('admin/stamp', [StampCardsController::class, 'store'])->name('store.stamp');
+    // // Setting image stamp card
+    // Route::get('admin/stamp/image', [OrdinalImagesController::class, 'index'])->name('setting.image');
+    // Route::post('admin/stamp/image', [OrdinalImagesController::class, 'store'])->name('store.image');
+    // // Store management
+    // Route::get('admin/store', [StoreController::class, 'index'])->name('store.management');
+    // Route::post('admin/store', [StoreController::class, 'import'])->name('store.import');
+    // // Export coupon
+    // Route::get('admin/export', [CouponWinningListsController::class, 'index'])->name('coupon.winning.lists');
+    // Route::post('admin/exporting', [CouponWinningListsController::class, 'export'])->name('export');
     //
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('appadmin', [AuthController::class, 'test'])->name('test');

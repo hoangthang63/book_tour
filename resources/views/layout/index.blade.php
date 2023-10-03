@@ -73,7 +73,7 @@ session()->forget('notification');
                                 <form action="{{ route('app.destroy',['app' => $list_app->id_app]) }}" style="display: inline" method="POST" >
                                     @csrf
                                     @method('delete')
-                                    <button class="btn btn-danger" onclick="return confirm('You will delete all data related to this app. Are you sure?');">Delete</button>
+                                    <button class="btn btn-danger" onclick="return confirm('You will delete all data related to this company. Are you sure?');">Delete</button>
                                 </form>
                             </td>
                         </tr>

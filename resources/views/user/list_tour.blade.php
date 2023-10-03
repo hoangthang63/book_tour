@@ -36,7 +36,7 @@ session()->forget('notification');
         {{-- @php
             dd($errors->any())
         @endphp --}}
-        <div class="card-body">
+        <div class="card-body scroll">
             <table class="table table-striped table-centered mb-0">
                 <thead>
                     <tr>
@@ -57,15 +57,15 @@ session()->forget('notification');
                             <td>{{ $each->id }}</td>
                             <td>{{ $each->name }}</td>
                             <td>{{ $each->departure_place }}</td>
-                            <td>{{ $each->price }}</td>
+                            <td>{{ number_format($each->price) }}</td>
                             <td>{{ $each->start_at . '~' .$each->end_at }}</td>
                             <td>{{ $each->slot - $each->slot_available . '/' .$each->slot }}</td>
                             <td><a href="{{ route('tour.edit',['tour' => $each->id]) }}" class="btn btn-info">Edit</a></td>
                             <td>
-                            <form action="{{ route('app.admin.destroy',['app' => $each->id]) }}" style="display: inline" method="POST" >
+                            <form action="{{ route('tour.destroy',['tour' => $each->id]) }}" style="display: inline" method="POST" >
                                 @csrf
                                 @method('delete')
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-danger" onclick="confirm('Are you sure?')" {{ $each->slot == $each->slot_available  ? '' : 'disabled' }}>Delete</button>
                             </form>
                         </td>
                         </tr>
@@ -88,6 +88,10 @@ session()->forget('notification');
     <style>
         .btn-outline-primary {
             pointer-events: none;
+        }
+        .scroll {
+            max-height: 400px;
+            overflow-y: auto;
         }
     </style>
     <button type="button"

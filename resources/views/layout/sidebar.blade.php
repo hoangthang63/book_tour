@@ -39,19 +39,19 @@
                                 <li class="side-nav-item">
                                     <a href="{{ route('admin') }}" class="side-nav-link" aria-expanded="false">
                                         <i class="mdi mdi-format-list-bulleted-square"></i>
-                                        <span> List app </span>
+                                        <span> List company </span>
                                     </a>
                                 </li>
                                 <li class="side-nav-item">
                                     <a href="{{ route('app.admin') }}" class="side-nav-link" aria-expanded="false">
                                         <i class="mdi mdi-playlist-edit"></i>
-                                        <span> App admin </span>
+                                        <span> List admin </span>
                                     </a>
                                 </li>
                                 @endif
                                 
 
-                                <li class="side-nav-title side-nav-item">App admin</li>
+                                <li class="side-nav-title side-nav-item">Admin</li>
 
                                 {{-- <li class="side-nav-item">
                                     <a href="#" class="side-nav-link" aria-expanded="false">

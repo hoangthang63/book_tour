@@ -10,6 +10,7 @@ use App\Models\OrdinalImages;
 use App\Models\ScanHistories;
 use App\Models\StampCards;
 use App\Models\Store;
+use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -78,12 +79,7 @@ class ListAppController extends Controller
     {
         DB::transaction(function () use ($app) {
             Admin::where('id_app', $app)->delete();
-            Coupon::where('id_app', $app)->delete();
-            CouponWinningLists::where('id_app', $app)->delete();
-            OrdinalImages::where('id_app', $app)->delete();
-            ScanHistories::where('id_app', $app)->delete();
-            StampCards::where('id_app', $app)->delete();
-            Store::where('id_app', $app)->delete();
+            Tour::where('id_company', $app)->delete();
             ListApp::where('id_app', $app)->delete();
         });
         session()->put('notification', true);

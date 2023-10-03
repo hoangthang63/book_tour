@@ -17,7 +17,7 @@
 
                         <div class="form-group">
                             <label for="example-select">Loại:</label>
-                            <select class="form-control" name="type" id="example-select">
+                            <select class="form-control" name="type" id="example-select" {{ $editable ? '' : 'disabled' }}>
                                 <option value="0" {{ $tour->type == '0' ? 'selected' : '' }}>Nội địa</option>
                                 <option value="1" {{ $tour->type == '1' ? 'selected' : '' }}>Quốc tế</option>
                             </select>
@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label for="simpleinput">Điểm khởi hành:</label>
                             <input type="text" id="simpleinput" name="departure_place"
-                                value="{{ $tour->departure_place }}" placeholder="Hà Nội" class="form-control">
+                                value="{{ $tour->departure_place }}" placeholder="Hà Nội" class="form-control" {{ $editable ? '' : 'disabled' }}>
                         </div>
 
                         <div class="form-group">
@@ -41,14 +41,14 @@
 
                         <div class="form-group mb-3">
                             <label for="example-date">Ngày khởi hành:</label>
-                            <input class="form-control col-sm-4" id="start_date" value="{{ $tour->start_at }}"
-                                type="date" name="start_at">
+                            <input class="form-control col-sm-4" id="start_date" value="{{ date_format($tour->start_at,'Y-m-d') }}"
+                                type="date" name="start_at" {{ $editable ? '' : 'disabled' }}>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="example-date">Ngày kết thúc:</label>
-                            <input class="form-control col-sm-4" onchange="myFuntion()" value="{{ $tour->end_at }}"
-                                id="end_date" type="date" name="end_at">
+                            <input class="form-control col-sm-4" onchange="myFuntion()" value="{{ date_format($tour->end_at,'Y-m-d') }}"
+                                id="end_date" type="date" name="end_at" {{ $editable ? '' : 'disabled' }}>
                         </div>
 
                         <div id="items">
@@ -69,13 +69,13 @@
                         <div class="form-group">
                             <label for="simpleinput">Số chỗ</label>
                             <input type="number" id="" value="{{ $tour->slot }}" name="slot" placeholder="40"
-                                class="form-control">
+                                class="form-control" {{ $editable ? '' : 'disabled' }}>
                         </div>
 
                         <div class="form-group">
                             <label for="simpleinput">Giá:</label>
                             <input type="number" id="" name="price" value="{{ $tour->price }}"
-                                placeholder="nhập giá" class="form-control">
+                                placeholder="nhập giá" class="form-control" {{ $editable ? '' : 'disabled' }}>
                         </div>
 
                         <button class="btn btn-primary">Lưu</button>
@@ -89,6 +89,9 @@
 @endsection
 @section('js')
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script>
+    // $("#start_date").datepicker( "setDate" , "2023-07-05" );
+    </script>
     <script>
         let schedule = @json($schedules);
         window.onload = function() {

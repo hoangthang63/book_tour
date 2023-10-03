@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use Illuminate\Support\Facades\Http;
 use App\Models\Receipt;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -79,11 +81,11 @@ class ReceiptController extends Controller
     {
         $tour = Tour::where('id', $request->id_tour)->first();
         if ($tour->slot_available >= $request->amount) {
-            DB::table('tour')
-                ->where('id', $request->id_tour)
-                ->update([
-                    'slot_available' => $tour->slot_available -  $request->amount,
-                ]);
+            // DB::table('tour')
+            //     ->where('id', $request->id_tour)
+            //     ->update([
+            //         'slot_available' => $tour->slot_available -  $request->amount,
+            //     ]);
         } else {
             return response()->json([
                 'status_code' => 400,
@@ -106,7 +108,7 @@ class ReceiptController extends Controller
     }
     public function purchasedOrder(Request $request)
     {
-        $data = Receipt::Where('id_customer', $request->id)->with('tour')
+        $data = Receipt::Where('id_customer', $request->id)->where('status', 1)->with('tour')
             // ->join('tour', 'tour.id', '=', 'receipt.id_tour')
             ->get();
         return response()->json([
@@ -141,6 +143,35 @@ class ReceiptController extends Controller
             ]);
         }
         if ($request->get('vnp_ResponseCode') == '00') {
+            try {
+                $user = Receipt::where('id', $request->get('vnp_OrderInfo'))->first();
+                $userInfo = Customer::where('id', $user->id_customer)->first();
+                $tourName = Tour::where('id', $user->id_tour)->first();
+                if ($tourName->slot_available < $user->amount) {
+                    return "Not enough tickets";
+                }
+                DB::table('tour')
+                ->where('id', $user->id_tour)
+                ->update([
+                    'slot_available' => $tourName->slot_available - $user->amount,
+                ]);
+                $apiURL = "https://travelkma.onrender.com/nodemail-payment";
+                $data = [
+                    'email' => $userInfo->email,
+                    'amount' => $user->amount,
+                    'name' => $tourName->name,
+                    ];
+                $headers = [
+                    'X-header' => 'value'
+                ];
+                    
+                    $response = Http::withHeaders($headers)->post($apiURL, $data);
+                    
+                    $statusCode = $response->status();
+            } catch (\Throwable $th) {
+                logger($th);
+            }
+         
             DB::table('receipt')
             ->where('id', $request->get('vnp_OrderInfo'))
             ->update([

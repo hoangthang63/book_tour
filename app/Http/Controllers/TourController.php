@@ -108,12 +108,14 @@ class TourController extends Controller
         $schedule = Schedule::where('id_tour', $tour)->get();
         $schedule->total = date_diff(new DateTime($get->start_at), new DateTime($get->end_at))->format("%a");
 
+        $editable = ($get->slot == $get->slot_available) ? true : false;
         if ($get == null) {
             return view('user.404');
         }
         return view('user.edit_tour', [
             'tour' => $get,
             'schedules' => $schedule,
+            'editable' => $editable,
         ]);
     }
 
@@ -166,7 +168,7 @@ class TourController extends Controller
         $idApp = session()->get('id_app');
 
         $get1 = DB::select("SELECT DATE_FORMAT(created_at,'%e-%m') 
-        as ngay, SUM(total) as count  from receipt join tour on receipt.id_tour = tour.id where id_company = $idApp group by ngay;");
+        as ngay, SUM(total) as count  from receipt join tour on receipt.id_tour = tour.id where id_company = $idApp and status = 1 group by ngay;");
 
         $max_date = 30;
         $today = date('d');
@@ -218,8 +220,9 @@ class TourController extends Controller
             'internationalRatio' => $internationalRatio,
         ]);
     }
-    public function destroy($app)
+    public function destroy($tour)
     {
+        Tour::where('id', $tour)->delete();
 
         session()->put('notification', true);
         return redirect()->route('admin');
