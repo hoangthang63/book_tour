@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Http;
 use App\Models\Receipt;
+use App\Models\Ticket;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ReceiptController extends Controller
 {
@@ -155,11 +157,32 @@ class ReceiptController extends Controller
                 ->update([
                     'slot_available' => $tourName->slot_available - $user->amount,
                 ]);
+                $domain = 'thanghv.tk/';
+                $tickets = [];
+                for ($i=0; $i < $user->amount; $i++) { 
+                    $tick_code = bin2hex(random_bytes(16)). time(). $user->id_customer;
+                    $image = \QrCode::format('png')
+                                    ->merge('LogoKma.png', 0.2, true)
+                                    ->size(300)->errorCorrection('H')
+                                    ->generate($tick_code);
+                    $output_file = 'public/storage_ticket/qr-code/img-' . $user->id_customer .'-'. time() . '.png';
+                    $tick_img = $domain . $output_file;
+                    array_push($tickets, $tick_img);
+                    Storage::disk('local')->put($output_file, $image);
+                    Ticket::create([
+                        'id_customer' => $user->id_customer,
+                        'id_tour' => $user->id_tour,
+                        'ticket_code' => $tick_code,
+                        'ticket_img' => $tick_img,
+                        'status' => 1,
+                    ]);
+                }
                 $apiURL = "https://travelkma.onrender.com/nodemail-payment";
                 $data = [
                     'email' => $userInfo->email,
                     'amount' => $user->amount,
                     'name' => $tourName->name,
+                    'tickets' => $tickets,
                     ];
                 $headers = [
                     'X-header' => 'value'

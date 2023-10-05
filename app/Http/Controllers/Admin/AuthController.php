@@ -31,6 +31,30 @@ class AuthController extends Controller
         return view('app1.index');
     }
 
+    public function loginStaff(Request $request){
+        $account = $request->get('account');
+        $password = $request->get('password');
+        $staff = $this->admins->where('account', $account)->first();
+        if ($staff == null) {
+            return response()->json([
+                'status_code' => 401,
+                'message' => 'Account doesn\'t exist. ',
+            ]);
+        }
+
+        if(Hash::check($request->password, $staff->password) && $staff->role == 2) {
+            return response()->json([
+                'status_code' => 200,
+                'access_token' => $staff->access_token,
+            ]);
+        } else {
+            return response()->json([
+                'status_code' => 401,
+                'message' => 'Wrong password.',
+            ]);
+        }
+    }
+
     public function processLogin(Request $request)
     {
         session()->flash("old",$request->get('account'));
