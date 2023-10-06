@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-body scroll">
                         {{-- <h4 class="header-title">Tên</h4> --}}
-                        <form action="{{ route('tour.store') }}" method="POST">
+                        <form action="{{ route('tour.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                         <div class="form-group">
                             <label for="simpleinput">Tên:</label>

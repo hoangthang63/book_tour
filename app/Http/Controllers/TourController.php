@@ -73,12 +73,12 @@ class TourController extends Controller
             DB::beginTransaction();
             // dd($request->all());
             $idApp = session()->get('id_app');
-            // $image =  '/storage/' . $request->logo->store('uploads_' . $idApp, 'public');
+            $image =  '/storage/' . $request->image->store('uploads_' . $idApp, 'public');
             $app = new Tour();
             $app->fill($request->only('name', 'type', 'description', 'departure_place', 'image', 'start_at', 'end_at', 'price', 'slot'));
             $app->slot_available = $request->slot;
             $app->id_company = $idApp;
-            // $app->logo = $image;
+            $app->image = $image;
             $app->save();
 
             for ($i = 1; $i <= $request->total; $i++) {

@@ -11,6 +11,7 @@ use App\Http\Controllers\StampCardsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+});
+Route::get('/file-link', function () {
+    symlink(storage_path('app/public'), public_path('storage'));
+});
 Route::get('test', function () {
     return view('layout.test');
 });

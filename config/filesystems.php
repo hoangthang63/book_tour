@@ -68,7 +68,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('storage_ticket') => storage_path('storage_ticket'),
+        // public_path('storage_ticket') => storage_path('storage_ticket'),
     ],
 
 ];
