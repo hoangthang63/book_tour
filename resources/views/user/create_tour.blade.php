@@ -116,6 +116,10 @@
                             <div class="form-group">
                                 <label>Mô tả</label>
                                 <textarea class="form-control" name="schedule_description_${index}" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                            <label for="example-fileinput">Ảnh</label>
+                            <input type="file" name="schedule_image_${index}" class="form-control-file">
                 </div>`
                 $('#items').append(html);
                 }

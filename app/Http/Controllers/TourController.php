@@ -71,7 +71,7 @@ class TourController extends Controller
     {
         try {
             DB::beginTransaction();
-            // dd($request->all());
+            // dd($request->all(),$request['schedule_image_' . 1]);
             $idApp = session()->get('id_app');
             $image =  '/storage/' . $request->image->store('uploads_' . $idApp, 'public');
             $app = new Tour();
@@ -87,7 +87,7 @@ class TourController extends Controller
                 $schedule->id_tour = $app->id;
                 $schedule->title = $request->get('schedule_title_' . $i);
                 $schedule->description = $request->get('schedule_description_' . $i);
-                $schedule->image = $request->get('schedule_image_' . $i);
+                $schedule->image = '/storage/' . $request['schedule_image_' . $i]->store('uploads_' . $idApp, 'public');
                 $schedule->save();
             }
             DB::commit();

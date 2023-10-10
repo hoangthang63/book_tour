@@ -12,9 +12,12 @@ class TicketController extends Controller
 {
     public function scan(Request $request)
     {
-        $ticket = Ticket::where('ticket_code', $request->ticket_code)->where('id_tour', $request->id_tour)->first();
-        if ($ticket->status === 1) {
-            DB::table('tour')
+        // dd($request->all());
+        $ticket = Ticket::where('ticket_code', $request->ticket_code)
+        // ->where('id_tour', $request->id_tour)
+        ->first();
+        if ($ticket->status == 1) {
+            DB::table('tickets')
             ->where('id', $ticket->id)
             ->update([
                 'status' => 2,
@@ -25,13 +28,20 @@ class TicketController extends Controller
                 'status' => 1,
                 'message' => 'success',
             ]);
-        }else{
+        }
+        if ($ticket->status == 2) {
+            return response()->json([
+                'status_code' => 200,
+                'status' => 1,
+                'message' => 'success',
+            ]);
+        }
+
             return response()->json([
                 'status_code' => 422,
                 'status' => 2,
                 'message' => 'fail',
             ]);
-        }
     }
     public function listTour(Request $request)
     {
