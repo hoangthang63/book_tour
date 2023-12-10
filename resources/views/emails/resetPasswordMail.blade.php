@@ -4,9 +4,10 @@
     <title>Book Tour</title>
 </head>
 <body>
-    <h1>{{ $data['title'] }}</h1>
+
+    <h1>{{ $data['email'] }}</h1>
     <div>
-        <p>Your new password is <strong>{{ $data['body'] }}</strong></p>
+        <p>Your new password is <strong>{{ $data['password'] }}</strong></p>
     </div>
 </body>
 </html>

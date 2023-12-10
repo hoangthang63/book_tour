@@ -73,7 +73,7 @@ class KhachHangController extends Controller
     public function forgetPassword(Request $request)
     {
         try {
-            $apiURL = "https://travelkma.onrender.com/nodemail";
+            // $apiURL = "https://travelkma.onrender.com/nodemail";
             $customer = $this->customer->where('email', $request->email)->exists();
             if (!$customer) {
                 return response()->json([
@@ -91,19 +91,19 @@ class KhachHangController extends Controller
             ->update([
                 'password' => Hash::make($randomString),
             ]);
-            // Mail::to($request->email)->send(new MailNotify($data));
-            $headers = [
-                'X-header' => 'value'
-            ];
+            Mail::to($request->email)->send(new MailNotify($data));
+            // $headers = [
+            //     'X-header' => 'value'
+            // ];
             
-            $response = Http::withHeaders($headers)->post($apiURL, $data);
+            // $response = Http::withHeaders($headers)->post($apiURL, $data);
             
-            $statusCode = $response->status();            
+            // $statusCode = $response->status();            
             
-            if ($statusCode == 200) {
-                $responseBody = json_decode($response->getBody(), true);
-                $data = $responseBody;
-            }
+            // if ($statusCode == 200) {
+            //     $responseBody = json_decode($response->getBody(), true);
+            //     $data = $responseBody;
+            // }
             return response()->json([
                 'status_code' => 200,
                 'message' => 'success',
@@ -111,7 +111,7 @@ class KhachHangController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status_code' => 400,
-                'message' => $th + "1",
+                'message' => $th,
             ]);
         }
 

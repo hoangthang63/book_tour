@@ -16,7 +16,7 @@ class CheckAppAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (session()->get('role')===0) {
+        if (session()->get('role')==0) {
             return back();
         }
         return $next($request);

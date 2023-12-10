@@ -79,7 +79,7 @@ class AuthController extends Controller
             if ($admin->role == self::appAdmin) {
                 $name = $this->listApps->getAppById($admin->id_app);
                 session()->put('name_app', $name->name);
-                return redirect()->route('setting.coupon');
+                return redirect()->route('tour.index');
             }
             return redirect()->route('admin');
         } else {
@@ -87,6 +87,7 @@ class AuthController extends Controller
         }
 
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('login')->with('message', 'The username or password you entered is incorrect, please try again.');
         }
     }

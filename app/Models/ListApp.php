@@ -12,6 +12,7 @@ class ListApp extends Model
     protected $fillable =[
         'name',
         'logo',
+        'id',
     ];
     protected $table = 'list_company';
     public $timestamps = false;
