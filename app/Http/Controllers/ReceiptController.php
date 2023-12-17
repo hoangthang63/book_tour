@@ -167,8 +167,8 @@ class ReceiptController extends Controller
                                     ->merge('LogoKma.png', 0.2, true)
                                     ->size(300)->errorCorrection('H')
                                     ->generate($tick_code);
-                    $output_file = 'storage/storage_ticket/qr-code/img-' . $user->id_customer .'-'. time() . '.png';
-                    $tick_img = $domain . $output_file;
+                    $output_file = 'public/storage_ticket/qr-code/img-' . $user->id_customer .'-'. time() . '.png';
+                    $tick_img = $domain . str_replace("public","storage", $output_file);
                     array_push($tickets, $tick_img);
                     Storage::disk('local')->put($output_file, $image);
                     Ticket::create([
