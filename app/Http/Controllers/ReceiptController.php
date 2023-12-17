@@ -18,7 +18,7 @@ class ReceiptController extends Controller
     public function vnpay($total, $idReceipt)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://127.0.0.1:8000/api/status-payment";
+        $vnp_Returnurl = config('app.domain') . "/api/status-payment";
         $vnp_TmnCode = "MI82RAA9"; //Mã website tại VNPAY 
         $vnp_HashSecret = "AQBSOIXSYSAOCVPNINJOQIEJFNYRWSYO"; //Chuỗi bí mật
 
