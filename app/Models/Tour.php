@@ -24,7 +24,9 @@ class Tour extends Model
         'slot',
         'slot_available',
         'id_company',
-        'departure_place'
+        'departure_place',
+        'reviews',
+        'links',
     ];
 
     protected $casts = [

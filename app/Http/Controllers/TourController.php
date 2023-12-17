@@ -69,6 +69,13 @@ class TourController extends Controller
 
     public function store(Request $request)
     {
+        $arrLink = [
+            'https://muongthanh.com/',
+            'https://lasinfoniadelreyhotel.com/',
+            'https://vinpearl.com/vi/hotels/vinpearl-resort-spa-ha-long',
+            'https://flchotelsresorts.com/quan-the/flc-sam-son',
+        ];
+        $arrReview = ['4.5', '4.6', '4.7', '4.8', '4.9'];
         try {
             DB::beginTransaction();
             // dd($request->all(),$request['schedule_image_' . 1]);
@@ -78,6 +85,8 @@ class TourController extends Controller
             $app->fill($request->only('name', 'type', 'description', 'departure_place', 'image', 'start_at', 'end_at', 'price', 'slot'));
             $app->slot_available = $request->slot;
             $app->id_company = $idApp;
+            $app->reviews = $arrReview[rand(0,4)];
+            $app->links = $arrLink[rand(0,3)];
             $app->image = $image;
             $app->save();
 

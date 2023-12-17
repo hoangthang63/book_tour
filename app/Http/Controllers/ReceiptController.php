@@ -10,6 +10,8 @@ use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\TicketMail;
+use Illuminate\Support\Facades\Mail;
 
 class ReceiptController extends Controller
 {
@@ -165,7 +167,7 @@ class ReceiptController extends Controller
                                     ->merge('LogoKma.png', 0.2, true)
                                     ->size(300)->errorCorrection('H')
                                     ->generate($tick_code);
-                    $output_file = 'public/storage_ticket/qr-code/img-' . $user->id_customer .'-'. time() . '.png';
+                    $output_file = 'storage/storage_ticket/qr-code/img-' . $user->id_customer .'-'. time() . '.png';
                     $tick_img = $domain . $output_file;
                     array_push($tickets, $tick_img);
                     Storage::disk('local')->put($output_file, $image);
@@ -177,9 +179,9 @@ class ReceiptController extends Controller
                         'status' => 1,
                     ]);
                 }
-                $apiURL = "https://travelkma.onrender.com/nodemail-payment";
+                // $apiURL = "https://travelkma.onrender.com/nodemail-payment";
                 $data = [
-                    'email' => $userInfo->email,
+                    // 'email' => $userInfo->email,
                     'amount' => $user->amount,
                     'name' => $tourName->name,
                     'tickets' => $tickets,
@@ -187,10 +189,11 @@ class ReceiptController extends Controller
                 $headers = [
                     'X-header' => 'value'
                 ];
+                Mail::to($userInfo->email)->send(new TicketMail($data));
                     
-                    $response = Http::withHeaders($headers)->post($apiURL, $data);
+                    // $response = Http::withHeaders($headers)->post($apiURL, $data);
                     
-                    $statusCode = $response->status();
+                    // $statusCode = $response->status();
             } catch (\Throwable $th) {
                 logger($th);
             }

@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class MailNotify extends Mailable
+class TicketMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,6 +19,7 @@ class MailNotify extends Mailable
      *
      * @return void
      */
+
     private $data = [];
 
     public function __construct($data)
@@ -35,7 +36,7 @@ class MailNotify extends Mailable
     {
         return new Envelope(
             from: new Address('anhnkno3@gmail.com', 'Book Tour'),
-            subject: 'Reset password',
+            subject: 'Success Payment',
         );
     }
 
@@ -47,7 +48,7 @@ class MailNotify extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.resetPasswordMail',
+            view: 'emails.ticketMail',
             with: [
                 'data' => $this->data,
             ],

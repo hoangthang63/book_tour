@@ -40,6 +40,13 @@ Route::post('login', [AuthController::class, 'processLogin'])->name('process_log
 Route::group([
     'middleware' => 'login admin',
 ], function () {
+    Route::get('admin/tour/create', [TourController::class, 'create'])->name('tour.create');
+    Route::post('admin/tour/create', [TourController::class, 'store'])->name('tour.store');
+    Route::get('admin/tour', [TourController::class, 'index'])->name('tour.index');
+    Route::get('admin/tour/edit/{tour}', [TourController::class, 'edit'])->name('tour.edit');
+    Route::post('admin/tour/edit/{tour}', [TourController::class, 'update'])->name('tour.update');
+    Route::get('admin/stat', [TourController::class, 'stat'])->name('tour.stat');
+    Route::get('admin/ratio', [TourController::class, 'ratio'])->name('tour.ratio');
     Route::group([
         'middleware' => 'app admin',
     ], function () {
@@ -51,13 +58,14 @@ Route::group([
         Route::get('admin/edit/{app}', [ListAppController::class, 'edit'])->name('app.edit');
         Route::post('admin/edit/{app}', [ListAppController::class, 'update'])->name('app.update');
         // thêm tour
-        Route::get('admin/tour/create', [TourController::class, 'create'])->name('tour.create');
-        Route::post('admin/tour/create', [TourController::class, 'store'])->name('tour.store');
-        Route::get('admin/tour', [TourController::class, 'index'])->name('tour.index');
-        Route::get('admin/tour/edit/{tour}', [TourController::class, 'edit'])->name('tour.edit');
-        Route::post('admin/tour/edit/{tour}', [TourController::class, 'update'])->name('tour.update');
-        Route::get('admin/stat', [TourController::class, 'stat'])->name('tour.stat');
-        Route::get('admin/ratio', [TourController::class, 'ratio'])->name('tour.ratio');
+        // Route::get('admin/tour/create', [TourController::class, 'create'])->name('tour.create');
+        // Route::post('admin/tour/create', [TourController::class, 'store'])->name('tour.store');
+        // Route::get('admin/tour', [TourController::class, 'index'])->name('tour.index');
+        // Route::get('admin/tour/edit/{tour}', [TourController::class, 'edit'])->name('tour.edit');
+        // Route::post('admin/tour/edit/{tour}', [TourController::class, 'update'])->name('tour.update');
+        // Route::get('admin/stat', [TourController::class, 'stat'])->name('tour.stat');
+        // Route::get('admin/ratio', [TourController::class, 'ratio'])->name('tour.ratio');
+
         Route::delete('admin/tour/destroy/{tour}', [TourController::class, 'destroy'])->name('tour.destroy');
 
         Route::delete('admin/destroy/{app}', [ListAppController::class, 'destroy'])->name('app.destroy');
