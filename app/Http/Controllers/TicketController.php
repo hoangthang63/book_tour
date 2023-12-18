@@ -16,6 +16,13 @@ class TicketController extends Controller
         $ticket = Ticket::where('ticket_code', $request->ticket_code)
         // ->where('id_tour', $request->id_tour)
         ->first();
+        if (empty($ticket)) {
+            return response()->json([
+                'status_code' => 422,
+                'status' => 3,
+                'message' => 'fail',
+            ]);
+        }
         if ($ticket->status == 1) {
             DB::table('tickets')
             ->where('id', $ticket->id)
@@ -32,14 +39,14 @@ class TicketController extends Controller
         if ($ticket->status == 2) {
             return response()->json([
                 'status_code' => 200,
-                'status' => 1,
-                'message' => 'success',
+                'status' => 2,
+                'message' => 'fail',
             ]);
         }
 
             return response()->json([
                 'status_code' => 422,
-                'status' => 2,
+                'status' => 3,
                 'message' => 'fail',
             ]);
     }
