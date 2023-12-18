@@ -116,6 +116,10 @@ class ReceiptController extends Controller
         // ->with('tour')
             ->join('tour', 'tour.id', '=', 'receipt.id_tour')
             ->get();
+        for ($i=0; $i < count($data); $i++) { 
+            $data[$i]['image'] = config('app.domain') . $data[$i]['image'];
+        }
+
         return response()->json([
             'status_code' => 200,
             'data' => $data,
