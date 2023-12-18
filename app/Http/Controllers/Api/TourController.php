@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TourController extends Controller
 {
@@ -15,7 +16,9 @@ class TourController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Tour::where('name','like','%'.$request->get('key_word').'%');
+        $toDay = Carbon::now()->format('Y-m-d');
+        $query = Tour::where('name','like','%'.$request->get('key_word').'%')
+        ->where("start_at", '>', $toDay);
         $list = '';
 
         if ($request->get('type') == 'in') {
