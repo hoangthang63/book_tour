@@ -86,7 +86,7 @@ class TourController extends Controller
             $app->slot_available = $request->slot;
             $app->id_company = $idApp;
             $app->reviews = $arrReview[rand(0,4)];
-            $app->links = $arrLink[rand(0,3)];
+            $app->linkHotel = $arrLink[rand(0,3)];
             $app->image = $image;
             $app->save();
 

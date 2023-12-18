@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Tour extends Model
 {
@@ -26,7 +27,7 @@ class Tour extends Model
         'id_company',
         'departure_place',
         'reviews',
-        'links',
+        'linkHotel',
     ];
 
     protected $casts = [
@@ -36,8 +37,8 @@ class Tour extends Model
 
     protected function serializeDate(DateTimeInterface $date): string
     {
-        return (int) \Carbon\Carbon::parse($date)->timestamp;
-        // return $date->format('Y-m-d');
+        // return (int) \Carbon\Carbon::parse($date)->timestamp;
+        return $date->format('d-m');
     }
 
     public function schedules(){
@@ -46,5 +47,14 @@ class Tour extends Model
 
     public function company(){
         return $this->hasOne(Company::class, 'id_company', 'id');
+    }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value){
+                return config('app.domain') . $value;
+            }
+        );
     }
 }
