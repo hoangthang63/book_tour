@@ -112,8 +112,9 @@ class ReceiptController extends Controller
     }
     public function purchasedOrder(Request $request)
     {
-        $data = Receipt::Where('id_customer', $request->id)->where('status', 1)->with('tour')
-            // ->join('tour', 'tour.id', '=', 'receipt.id_tour')
+        $data = Receipt::Where('id_customer', $request->id)->where('status', 1)
+        // ->with('tour')
+            ->join('tour', 'tour.id', '=', 'receipt.id_tour')
             ->get();
         return response()->json([
             'status_code' => 200,
