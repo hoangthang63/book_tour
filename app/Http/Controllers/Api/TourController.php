@@ -17,12 +17,21 @@ class TourController extends Controller
     public function index(Request $request)
     {
         $toDay = Carbon::now()->format('Y-m-d');
-        $query = Tour::where('name','like','%'.$request->get('key_word').'%')
-        ->where("start_at", '>', $toDay);
+        $query = Tour::where('name','like','%'.$request->get('key_word').'%');
         $list = '';
 
         if ($request->get('type') == 'in') {
             $list = $query->where('type',0);
+        }
+
+        if($request->get('start_at')){
+            $list = $query->whereDate("start_at", '>', Carbon::parse($request->get('start_at'))->format('Y-m-d'));
+        }else{
+            $list = $query->where("start_at", '>', $toDay);
+        }
+
+        if($request->get('end_at')){
+            $list = $query->where("end_at", '=<', Carbon::parse($request->get('end_at'))->format('Y-m-d'));
         }
 
         if ($request->get('type') == 'out') {
