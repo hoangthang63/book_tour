@@ -25,13 +25,13 @@ class TourController extends Controller
         }
 
         if($request->get('start_at')){
-            $list = $query->whereDate("start_at", '>', Carbon::parse($request->get('start_at'))->format('Y-m-d'));
+            $list = $query->whereDate("start_at", '>=', Carbon::parse($request->get('start_at'))->format('Y-m-d'));
         }else{
             $list = $query->where("start_at", '>', $toDay);
         }
 
         if($request->get('end_at')){
-            $list = $query->where("end_at", '=<', Carbon::parse($request->get('end_at'))->format('Y-m-d'));
+            $list = $query->whereDate("end_at", '<=', Carbon::parse($request->get('end_at'))->format('Y-m-d'));
         }
 
         if ($request->get('type') == 'out') {
