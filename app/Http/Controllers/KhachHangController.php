@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailNotify;
+use App\Mail\UnlockAccountMail;
 use App\Models\Customer;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -30,12 +31,46 @@ class KhachHangController extends Controller
             ]);
         }
 
+        if ($customer->is_active == 0) {
+            return response()->json([
+                'status_code' => 403,
+                'message' => 'Your account has been locked. Please check your email to unlock',
+            ]);
+        }
+
+        if ($customer->login_attempt == 0) {
+            $data = [
+                'unlock_url' => config('app.domain') . '/unlock/' . base64_encode(base64_encode(base64_encode($customer->id))),
+            ];
+            Mail::to($request->email)->send(new UnlockAccountMail($data));
+            DB::table('customer')
+            ->where('email', $request->email)
+            ->update([
+                'is_active' => 0,
+            ]);
+            return response()->json([
+                'status_code' => 403,
+                'message' => 'Your account has been locked',
+            ]);
+        }
+
         if(Hash::check($request->password, $customer->password)) {
+            DB::table('customer')
+            ->where('email', $request->email)
+            ->update([
+                'is_active' => 1,
+                'login_attempt' => 5,
+            ]);
             return response()->json([
                 'status_code' => 200,
                 'access_token' => $customer->access_token,
             ]);
         } else {
+            DB::table('customer')
+            ->where('email', $request->email)
+            ->update([
+                'login_attempt' => $customer->login_attempt - 1,
+            ]);
             return response()->json([
                 'status_code' => 401,
                 'message' => 'Wrong password.',
@@ -170,6 +205,8 @@ class KhachHangController extends Controller
             }
             $customer = $this->customer;
             $customer->fill($request->all());
+            $customer->phone_number = $this->encryptData($request->phone_number);
+            $customer->address = $this->encryptData($request->address);
             $customer->password = Hash::make($request->password);
             $customer->save();
 
@@ -188,5 +225,17 @@ class KhachHangController extends Controller
                 'message' => $th,
             ]);
         }
+    }
+
+    private function encryptData($data) {
+        $iv = str_repeat("0", openssl_cipher_iv_length(config('app.ciper')));
+        $option = 0;
+        return openssl_encrypt($data, config('app.ciper'), config('app.secret_key'), $option, $iv);
+    }
+
+    private function decryptData($data) {
+        $iv = str_repeat("0", openssl_cipher_iv_length(config('app.ciper')));
+        $option = 0;
+        return openssl_decrypt($data, config('app.ciper'), config('app.secret_key'), $option, $iv);
     }
 }

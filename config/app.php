@@ -19,6 +19,10 @@ return [
 
     'domain' => env('DOMAIN', 'http://127.0.0.1:8000'),
 
+    'ciper' => env('CIPER', 'AES-256-CBC'),
+
+    'secret_key' => env('SECRET_KEY', 'ksawejrwrq01rqwr45rqw75fjak3dpol'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

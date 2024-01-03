@@ -33,6 +33,7 @@ Route::get('/file-link', function () {
 Route::get('test', function () {
     return view('layout.test');
 });
+Route::get('unlock/{id}', [AdminController::class, 'unlock'])->name('unlock');
 // login
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'processLogin'])->name('process_login');

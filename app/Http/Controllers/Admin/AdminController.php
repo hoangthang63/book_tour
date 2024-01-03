@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Models\ListApp;
+use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreRequest;
@@ -12,10 +14,12 @@ class AdminController extends Controller
 {
     private $admins;
     private $listApps;
+    private $customer;
 
     public function __construct(){
         $this->admins = new Admin();
         $this->listApps = new ListApp();
+        $this->customer = new Customer();
     }
     public function index(){
         $idApp = session()->get('id_app');
@@ -67,5 +71,22 @@ class AdminController extends Controller
         $app->delete();
         // Admin::destroy($app->id);
         return redirect()->route('app.admin');
+    }
+
+    public function unlock($id){
+        $customerId = base64_decode(base64_decode(base64_decode($id)));
+        $customer = $this->customer->where('id', $customerId)->first();
+        if ($customer == null) {
+            abort(404);
+        }
+
+        DB::table('customer')
+        ->where('id', $customerId)
+        ->update([
+            'login_attempt' => 5,
+            'is_active' => 1,
+        ]);
+
+        return "Mở khóa tài khoản thành công";
     }
 }
