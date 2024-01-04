@@ -177,8 +177,8 @@ class KhachHangController extends Controller
             ->where('id', $request->id)
             ->update([
                 'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'address' => $request->address,
+                'phone_number' => $this->encryptData($request->phone_number),
+                'address' => $this->encryptData($request->address),
             ]);
             return response()->json([
                 'status_code' => 200,
